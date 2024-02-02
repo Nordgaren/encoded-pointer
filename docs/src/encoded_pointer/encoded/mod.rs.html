@@ -270,6 +270,7 @@
 <a href="#270" id="270">270</a>
 <a href="#271" id="271">271</a>
 <a href="#272" id="272">272</a>
+<a href="#273" id="273">273</a>
 </pre></div><pre class="rust"><code><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>consts;
 
 <span class="kw">use </span><span class="kw">crate</span>::decoded::{DecodedPointer, DecodedPointerMut};
@@ -301,7 +302,8 @@
 /// #   pointer as usize != 0
 /// # }
 /// fn example(some_address: usize) {
-///     let mut encoded = EncodedPointer::from_address(some_address).expect(&quot;Could not encode pointer&quot;);
+///     let mut encoded = EncodedPointer::from_address(some_address)
+///             .expect(&quot;Could not encode pointer&quot;);
 ///     let pointer = encoded.get_pointer();
 ///     let bool_one = check_some_value(pointer);
 ///     encoded.set_bool_one(bool_one);///

@@ -19,7 +19,8 @@ use encoded_pointer::encoded::EncodedPointer;
 use encoded_pointer::decoded::DecodedPointer;
 
  fn example(some_address: usize) {
-     let mut encoded = EncodedPointer::from_address(some_address).expect("Could not encode pointer");
+     let mut encoded = EncodedPointer::from_address(some_address)
+             .expect("Could not encode pointer");
      let pointer = encoded.get_pointer();
      let bool_one = check_some_value(pointer);
      encoded.set_bool_one(bool_one);

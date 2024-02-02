@@ -53,7 +53,7 @@ use encoded_pointer::decoded::DecodedPointer;
 x86_64 defines a 48-bit virtual address space. This means that we can use up to 16 bits to encode extra data into the
 pointer. This may change in the future, though, so I am not sure what my plans are. It might be a while before we get to
 the point where we are using that much memory at once, and some industries will not be able to use those extra 16 bits 
-sooner than others. At this point, though, we could encode a 16 bit number into the pointer, and use it, if we needed.
+sooner than others. At this point, though, we could encode a 16-bit number into the pointer, and use it, if we needed.
 
 I may update this some day to use a macro so that the user can generate their own custom types to be stored in those 16 
 bits, splitting the bits up as the user desires (maybe you need a 4 bit number and a few bools, or an entire byte and some

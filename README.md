@@ -66,5 +66,5 @@ bools may be too much, though, as even on Windows, the address space only leaves
 
 I don't know the compatability on 32-bit Linux, as I don't do much RE on Linux, so I don't tend to see linux addresses 
 and their ranges, so I couldn't even guess, right now. If anyone has some resources, I'd appreciate it (does 32-bit Linux 
-use the signed bit of a pointer sized type?). It should be compatible in 64-bit Linux, right now, as the address space is 
+use the signed bit of a pointer sized type?). It should be compatible in 64-bit Linux, right now, as the virtual address space is 
 hardware limited to 48 bits on 64-bit systems.  

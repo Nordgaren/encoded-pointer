@@ -1,6 +1,6 @@
 use crate::encoded::EncodedPointer;
 
-/// A helper type used to deconstruct an EncodedPointer to a `*mut T` and two encoded bools.
+/// A helper type used to deconstruct an `EncodedPointer` to a `*mut T` and two encoded bools.
 /// Does not have any methods associated with it, and all fields are public.
 ///
 /// # Example
@@ -34,7 +34,7 @@ pub struct DecodedPointer<T> {
     pub bool_two: bool,
 }
 
-/// A type used to deconstruct an EncodedPointer to a `*mut T` and two encoded bools.
+/// A type used to deconstruct an `EncodedPointer` to a `*mut T` and two encoded bools.
 /// Does not have any methods associated with it, and all fields are public.
 ///
 /// # Example

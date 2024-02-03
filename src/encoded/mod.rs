@@ -71,11 +71,11 @@ impl EncodedPointer {
     ///
     /// # Arguments
     ///
-    /// * `pointer`: usize
-    /// * `bool_one`: bool
-    /// * `bool_two`: bool
+    /// * `pointer`: `usize`
+    /// * `bool_one`: `bool`
+    /// * `bool_two`: `bool`
     ///
-    /// returns: Result<EncodedPointer, Error>
+    /// returns: `Result<EncodedPointer, Error>`
     pub fn new(pointer: usize, bool_one: bool, bool_two: bool) -> std::io::Result<Self> {
         if bit_collision(pointer) {
             return Err(Error::new(
@@ -92,9 +92,9 @@ impl EncodedPointer {
     ///
     /// # Arguments
     ///
-    /// * `address`: usize
+    /// * `address`: `usize`
     ///
-    /// returns: Result<EncodedPointer, Error>
+    /// returns: `Result<EncodedPointer, Error>`
     pub fn from_address(address: usize) -> std::io::Result<Self> {
         Self::new(address, false, false)
     }
@@ -105,9 +105,9 @@ impl EncodedPointer {
     ///
     /// # Arguments
     ///
-    /// * `pointer`: usize
+    /// * `pointer`: `usize`
     ///
-    /// returns: EncodedPointer
+    /// returns: `EncodedPointer`
     ///
     /// # Safety
     /// This function does not check if there is bit collision. It is up to the user to pass in a valid value that either
@@ -120,9 +120,9 @@ impl EncodedPointer {
     ///
     /// # Arguments
     ///
-    /// * `pointer`: usize
+    /// * `pointer`: `usize`
     ///
-    /// returns: DecodedPointer<T>
+    /// returns: `DecodedPointer<T>`
     pub fn get_decoded<T>(self) -> DecodedPointer<T> {
         self.into()
     }
@@ -130,15 +130,15 @@ impl EncodedPointer {
     ///
     /// # Arguments
     ///
-    /// * `pointer`: usize
+    /// * `pointer`: `usize`
     ///
-    /// returns: DecodedPointerMut<T>
+    /// returns: `DecodedPointerMut<T>`
     pub fn get_decoded_mut<T>(self) -> DecodedPointerMut<T> {
         self.into()
     }
     /// Returns the entire encoded pointer value, including the encoded bools.
     ///
-    /// returns: usize
+    /// returns: `usize`
     ///
     /// # Safety
     /// This function does not strip any data from the encoded pointer, and as such, may not return a valid memory address.
@@ -148,35 +148,35 @@ impl EncodedPointer {
     }
     /// Returns the address portion of the encoded pointer.
     ///
-    /// returns: usize
+    /// returns: `usize`
     #[inline(always)]
     pub fn get_address(self) -> usize {
         self.value & !ADDRESS_MASK
     }
     /// Returns a const pointer to the generic type, using the address portion of the encoded pointer.
     ///
-    /// returns: *const T
+    /// returns: `*const T`
     #[inline(always)]
     pub fn get_pointer<T>(self) -> *const T {
         self.into()
     }
     /// Returns a mutable pointer to the generic type, using the address portion of the encoded pointer.
     ///
-    /// returns: *mut T
+    /// returns: `*mut T`
     #[inline(always)]
     pub fn get_mut_pointer<T>(self) -> *mut T {
         self.into()
     }
     /// Returns the bool encoded into the last bit of the pointer.
     ///
-    /// returns: bool
+    /// returns: `bool`
     #[inline(always)]
     pub fn get_bool_one(self) -> bool {
         self.value & BOOL_ONE_MASK != 0
     }
     /// Returns the bool encoded into the second to last bit of the pointer.
     ///
-    /// returns: bool
+    /// returns: `bool`
     #[inline(always)]
     pub fn get_bool_two(self) -> bool {
         self.value & BOOL_TWO_MASK != 0
@@ -185,7 +185,7 @@ impl EncodedPointer {
     ///
     /// # Arguments
     ///
-    /// * `value`: usize
+    /// * `value`: `usize`
     #[inline(always)]
     pub fn set_value(&mut self, value: usize) {
         self.value = value
@@ -196,9 +196,9 @@ impl EncodedPointer {
     ///
     /// # Arguments
     ///
-    /// * `pointer`: usize
+    /// * `pointer`: `usize`
     ///
-    /// returns: bool
+    /// returns: `bool`
     #[inline(always)]
     pub fn set_address(&mut self, pointer: usize) -> bool {
         if bit_collision(pointer) {
@@ -212,7 +212,7 @@ impl EncodedPointer {
     ///
     /// # Arguments
     ///
-    /// * `b`: bool
+    /// * `b`: `bool`
     pub fn set_bool_one(&mut self, b: bool) {
         self.value &= !BOOL_ONE_MASK;
         self.value |= (b as usize) << BOOL_ONE_POSITION;
@@ -221,7 +221,7 @@ impl EncodedPointer {
     ///
     /// # Arguments
     ///
-    /// * `b`: bool
+    /// * `b`: `bool`
     #[inline(always)]
     pub fn set_bool_two(&mut self, b: bool) {
         self.value &= !BOOL_TWO_MASK;
@@ -233,9 +233,9 @@ impl EncodedPointer {
     ///
     /// # Arguments
     ///
-    /// * `pointer`: usize
-    /// * `bool_one`: bool
-    /// * `bool_two`: bool
+    /// * `pointer`: `usize`
+    /// * `bool_one`: `bool`
+    /// * `bool_two`: `bool`
     ///
     /// returns: usize
     #[inline(always)]
@@ -250,7 +250,7 @@ impl EncodedPointer {
 ///
 /// # Arguments
 ///
-/// * `pointer`: usize
+/// * `pointer`: `usize`
 fn bit_collision(pointer: usize) -> bool {
     pointer & ENCODED_MASK != 0
 }

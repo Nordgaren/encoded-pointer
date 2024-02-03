@@ -346,11 +346,11 @@
     ///
     /// # Arguments
     ///
-    /// * `pointer`: usize
-    /// * `bool_one`: bool
-    /// * `bool_two`: bool
+    /// * `pointer`: `usize`
+    /// * `bool_one`: `bool`
+    /// * `bool_two`: `bool`
     ///
-    /// returns: Result&lt;EncodedPointer, Error&gt;
+    /// returns: `Result&lt;EncodedPointer, Error&gt;`
     </span><span class="kw">pub fn </span>new(pointer: usize, bool_one: bool, bool_two: bool) -&gt; std::io::Result&lt;<span class="self">Self</span>&gt; {
         <span class="kw">if </span>bit_collision(pointer) {
             <span class="kw">return </span><span class="prelude-val">Err</span>(Error::new(
@@ -367,9 +367,9 @@
     ///
     /// # Arguments
     ///
-    /// * `address`: usize
+    /// * `address`: `usize`
     ///
-    /// returns: Result&lt;EncodedPointer, Error&gt;
+    /// returns: `Result&lt;EncodedPointer, Error&gt;`
     </span><span class="kw">pub fn </span>from_address(address: usize) -&gt; std::io::Result&lt;<span class="self">Self</span>&gt; {
         <span class="self">Self</span>::new(address, <span class="bool-val">false</span>, <span class="bool-val">false</span>)
     }
@@ -380,9 +380,9 @@
     ///
     /// # Arguments
     ///
-    /// * `pointer`: usize
+    /// * `pointer`: `usize`
     ///
-    /// returns: EncodedPointer
+    /// returns: `EncodedPointer`
     ///
     /// # Safety
     /// This function does not check if there is bit collision. It is up to the user to pass in a valid value that either
@@ -395,9 +395,9 @@
     ///
     /// # Arguments
     ///
-    /// * `pointer`: usize
+    /// * `pointer`: `usize`
     ///
-    /// returns: DecodedPointer&lt;T&gt;
+    /// returns: `DecodedPointer&lt;T&gt;`
     </span><span class="kw">pub fn </span>get_decoded&lt;T&gt;(<span class="self">self</span>) -&gt; DecodedPointer&lt;T&gt; {
         <span class="self">self</span>.into()
     }
@@ -405,15 +405,15 @@
     ///
     /// # Arguments
     ///
-    /// * `pointer`: usize
+    /// * `pointer`: `usize`
     ///
-    /// returns: DecodedPointerMut&lt;T&gt;
+    /// returns: `DecodedPointerMut&lt;T&gt;`
     </span><span class="kw">pub fn </span>get_decoded_mut&lt;T&gt;(<span class="self">self</span>) -&gt; DecodedPointerMut&lt;T&gt; {
         <span class="self">self</span>.into()
     }
     <span class="doccomment">/// Returns the entire encoded pointer value, including the encoded bools.
     ///
-    /// returns: usize
+    /// returns: `usize`
     ///
     /// # Safety
     /// This function does not strip any data from the encoded pointer, and as such, may not return a valid memory address.
@@ -423,35 +423,35 @@
     }
     <span class="doccomment">/// Returns the address portion of the encoded pointer.
     ///
-    /// returns: usize
+    /// returns: `usize`
     </span><span class="attr">#[inline(always)]
     </span><span class="kw">pub fn </span>get_address(<span class="self">self</span>) -&gt; usize {
-        (<span class="self">self</span>.value &lt;&lt; <span class="number">2</span>) &gt;&gt; <span class="number">2
-    </span>}
+        <span class="self">self</span>.value &amp; !ADDRESS_MASK
+    }
     <span class="doccomment">/// Returns a const pointer to the generic type, using the address portion of the encoded pointer.
     ///
-    /// returns: *const T
+    /// returns: `*const T`
     </span><span class="attr">#[inline(always)]
     </span><span class="kw">pub fn </span>get_pointer&lt;T&gt;(<span class="self">self</span>) -&gt; <span class="kw-2">*const </span>T {
         <span class="self">self</span>.into()
     }
     <span class="doccomment">/// Returns a mutable pointer to the generic type, using the address portion of the encoded pointer.
     ///
-    /// returns: *mut T
+    /// returns: `*mut T`
     </span><span class="attr">#[inline(always)]
     </span><span class="kw">pub fn </span>get_mut_pointer&lt;T&gt;(<span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>T {
         <span class="self">self</span>.into()
     }
     <span class="doccomment">/// Returns the bool encoded into the last bit of the pointer.
     ///
-    /// returns: bool
+    /// returns: `bool`
     </span><span class="attr">#[inline(always)]
     </span><span class="kw">pub fn </span>get_bool_one(<span class="self">self</span>) -&gt; bool {
         <span class="self">self</span>.value &amp; BOOL_ONE_MASK != <span class="number">0
     </span>}
     <span class="doccomment">/// Returns the bool encoded into the second to last bit of the pointer.
     ///
-    /// returns: bool
+    /// returns: `bool`
     </span><span class="attr">#[inline(always)]
     </span><span class="kw">pub fn </span>get_bool_two(<span class="self">self</span>) -&gt; bool {
         <span class="self">self</span>.value &amp; BOOL_TWO_MASK != <span class="number">0
@@ -460,7 +460,7 @@
     ///
     /// # Arguments
     ///
-    /// * `value`: usize
+    /// * `value`: `usize`
     </span><span class="attr">#[inline(always)]
     </span><span class="kw">pub fn </span>set_value(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: usize) {
         <span class="self">self</span>.value = value
@@ -471,9 +471,9 @@
     ///
     /// # Arguments
     ///
-    /// * `pointer`: usize
+    /// * `pointer`: `usize`
     ///
-    /// returns: bool
+    /// returns: `bool`
     </span><span class="attr">#[inline(always)]
     </span><span class="kw">pub fn </span>set_address(<span class="kw-2">&amp;mut </span><span class="self">self</span>, pointer: usize) -&gt; bool {
         <span class="kw">if </span>bit_collision(pointer) {
@@ -487,7 +487,7 @@
     ///
     /// # Arguments
     ///
-    /// * `b`: bool
+    /// * `b`: `bool`
     </span><span class="kw">pub fn </span>set_bool_one(<span class="kw-2">&amp;mut </span><span class="self">self</span>, b: bool) {
         <span class="self">self</span>.value &amp;= !BOOL_ONE_MASK;
         <span class="self">self</span>.value |= (b <span class="kw">as </span>usize) &lt;&lt; BOOL_ONE_POSITION;
@@ -496,7 +496,7 @@
     ///
     /// # Arguments
     ///
-    /// * `b`: bool
+    /// * `b`: `bool`
     </span><span class="attr">#[inline(always)]
     </span><span class="kw">pub fn </span>set_bool_two(<span class="kw-2">&amp;mut </span><span class="self">self</span>, b: bool) {
         <span class="self">self</span>.value &amp;= !BOOL_TWO_MASK;
@@ -508,9 +508,9 @@
     ///
     /// # Arguments
     ///
-    /// * `pointer`: usize
-    /// * `bool_one`: bool
-    /// * `bool_two`: bool
+    /// * `pointer`: `usize`
+    /// * `bool_one`: `bool`
+    /// * `bool_two`: `bool`
     ///
     /// returns: usize
     </span><span class="attr">#[inline(always)]
@@ -525,7 +525,7 @@
 ///
 /// # Arguments
 ///
-/// * `pointer`: usize
+/// * `pointer`: `usize`
 </span><span class="kw">fn </span>bit_collision(pointer: usize) -&gt; bool {
     pointer &amp; ENCODED_MASK != <span class="number">0
 </span>}

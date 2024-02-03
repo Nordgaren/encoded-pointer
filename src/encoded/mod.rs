@@ -151,7 +151,7 @@ impl EncodedPointer {
     /// returns: usize
     #[inline(always)]
     pub fn get_address(self) -> usize {
-        (self.value << 2) >> 2
+        self.value & !ADDRESS_MASK
     }
     /// Returns a const pointer to the generic type, using the address portion of the encoded pointer.
     ///

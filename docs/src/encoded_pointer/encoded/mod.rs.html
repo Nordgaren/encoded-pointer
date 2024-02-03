@@ -271,6 +271,8 @@
 <a href="#271" id="271">271</a>
 <a href="#272" id="272">272</a>
 <a href="#273" id="273">273</a>
+<a href="#274" id="274">274</a>
+<a href="#275" id="275">275</a>
 </pre></div><pre class="rust"><code><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>consts;
 
 <span class="kw">use </span><span class="kw">crate</span>::decoded::{DecodedPointer, DecodedPointerMut};
@@ -513,7 +515,9 @@
     /// returns: usize
     </span><span class="attr">#[inline(always)]
     </span><span class="kw">pub fn </span>encode(pointer: usize, bool_one: bool, bool_two: bool) -&gt; usize {
-        pointer | ((bool_one <span class="kw">as </span>usize) &lt;&lt; BOOL_ONE_POSITION) | ((bool_two <span class="kw">as </span>usize) &lt;&lt; BOOL_TWO_POSITION)
+        pointer
+            | ((bool_one <span class="kw">as </span>usize) &lt;&lt; BOOL_ONE_POSITION)
+            | ((bool_two <span class="kw">as </span>usize) &lt;&lt; BOOL_TWO_POSITION)
     }
 }
 

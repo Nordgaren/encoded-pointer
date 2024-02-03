@@ -1,4 +1,5 @@
-# [Encoded Pointer](https://github.com/Nordgaren/encoded-pointer)
+# Encoded Pointer
+[GitHub](https://github.com/Nordgaren/encoded-pointer)  
 An encoded pointer data structure that encodes up to two bools in the last two bits of a pointer.
 
 ## Usage

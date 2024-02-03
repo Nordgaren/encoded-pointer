@@ -240,7 +240,9 @@ impl EncodedPointer {
     /// returns: usize
     #[inline(always)]
     pub fn encode(pointer: usize, bool_one: bool, bool_two: bool) -> usize {
-        pointer | ((bool_one as usize) << BOOL_ONE_POSITION) | ((bool_two as usize) << BOOL_TWO_POSITION)
+        pointer
+            | ((bool_one as usize) << BOOL_ONE_POSITION)
+            | ((bool_two as usize) << BOOL_TWO_POSITION)
     }
 }
 

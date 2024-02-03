@@ -1,6 +1,6 @@
-use std::mem::size_of;
-use crate::encoded::consts::{BOOL_ONE_POSITION, PTR_SIZE_IN_BITS, BOOL_TWO_POSITION};
+use crate::encoded::consts::{BOOL_ONE_POSITION, BOOL_TWO_POSITION, PTR_SIZE_IN_BITS};
 use crate::encoded::EncodedPointer;
+use std::mem::size_of;
 
 #[test]
 fn set_bools() {
@@ -54,29 +54,10 @@ fn test_debug() {
 #[test]
 #[cfg(target_arch = "x86_64")]
 fn assert_values() {
-
     assert_eq!(size_of::<EncodedPointer>(), size_of::<usize>());
     assert_eq!(PTR_SIZE_IN_BITS, 64);
     assert_eq!(BOOL_ONE_POSITION, 63);
     assert_eq!(BOOL_TWO_POSITION, 62);
-}
-fn inner_example(pointer: EncodedPointer) {
-    let DecodedPointer {
-        pointer: buffer,
-        bool_one: something_i_care_about,
-        bool_two: something_else_i_care_about,
-    } = pointer.get_decoded::<u8>();
-
-    if something_i_care_about {
-        // Do something
-    }
-
-    if something_else_i_care_about {
-        // Do something
-    }
-
-    // Do something with the buffer
-    let byte = unsafe { buffer.read() };
 }
 
 #[test]

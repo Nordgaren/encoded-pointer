@@ -50,6 +50,13 @@ use encoded_pointer::decoded::DecodedPointer;
      // Do something with the pointer
      let byte = unsafe { buffer.read() };
  }
+# // Dummy functions for documentation examples
+# fn check_some_value(pointer: *const u8) -> bool {
+#   true
+# }
+# fn check_some_other_value(pointer: *const u8) -> bool {
+#   true
+# }
  ```
 
 ## Future

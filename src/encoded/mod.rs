@@ -46,7 +46,7 @@ use std::io::{Error, ErrorKind};
 ///         pointer: buffer,
 ///         bool_one: something_i_care_about,
 ///         bool_two: something_else_i_care_about,
-///     } = pointer.get_decoded::<u8>();///
+///     } = pointer.get_decoded::<u8>();
 ///
 ///     if something_i_care_about {
 ///         // Do something
@@ -237,7 +237,7 @@ impl EncodedPointer {
     /// * `bool_one`: `bool`
     /// * `bool_two`: `bool`
     ///
-    /// returns: usize
+    /// returns: `usize`
     #[inline(always)]
     pub fn encode(pointer: usize, bool_one: bool, bool_two: bool) -> usize {
         pointer
@@ -245,7 +245,6 @@ impl EncodedPointer {
             | ((bool_two as usize) << BOOL_TWO_POSITION)
     }
 }
-
 /// Returns true if any of the bits used for encoding are set.
 ///
 /// # Arguments

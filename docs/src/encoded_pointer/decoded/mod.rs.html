@@ -131,7 +131,7 @@
 /// ```rust
 /// # use encoded_pointer::encoded::EncodedPointer;
 /// # use encoded_pointer::decoded::DecodedPointerMut;
-/// fn example(pointer: EncodedPointer) {
+/// fn example(pointer: &amp;mut EncodedPointer) {
 ///     let DecodedPointerMut {
 ///         pointer: mut_buffer,
 ///         bool_one: something_i_care_about,
@@ -157,8 +157,8 @@
     <span class="kw">pub </span>bool_two: bool,
 }
 
-<span class="kw">impl</span>&lt;T&gt; From&lt;EncodedPointer&gt; <span class="kw">for </span>DecodedPointer&lt;T&gt; {
-    <span class="kw">fn </span>from(pointer: EncodedPointer) -&gt; <span class="self">Self </span>{
+<span class="kw">impl</span>&lt;T&gt; From&lt;<span class="kw-2">&amp;</span>EncodedPointer&gt; <span class="kw">for </span>DecodedPointer&lt;T&gt; {
+    <span class="kw">fn </span>from(pointer: <span class="kw-2">&amp;</span>EncodedPointer) -&gt; <span class="self">Self </span>{
         DecodedPointer {
             pointer: pointer.get_pointer(),
             bool_one: pointer.get_bool_one(),
@@ -167,10 +167,10 @@
     }
 }
 
-<span class="kw">impl</span>&lt;T&gt; From&lt;EncodedPointer&gt; <span class="kw">for </span>DecodedPointerMut&lt;T&gt; {
-    <span class="kw">fn </span>from(pointer: EncodedPointer) -&gt; <span class="self">Self </span>{
+<span class="kw">impl</span>&lt;T&gt; From&lt;<span class="kw-2">&amp;mut </span>EncodedPointer&gt; <span class="kw">for </span>DecodedPointerMut&lt;T&gt; {
+    <span class="kw">fn </span>from(pointer: <span class="kw-2">&amp;mut </span>EncodedPointer) -&gt; <span class="self">Self </span>{
         DecodedPointerMut {
-            pointer: pointer.get_mut_pointer(),
+            pointer: pointer.get_pointer_mut(),
             bool_one: pointer.get_bool_one(),
             bool_two: pointer.get_bool_two(),
         }

@@ -1,5 +1,9 @@
 # Encoded Pointer
-[GitHub](https://github.com/Nordgaren/encoded-pointer)  
+[GitHub](https://github.com/Nordgaren/encoded-pointer)
+
+> [!WARNING]
+> This project is in early development. Things may change. Sorry for any inconvenience.
+
 An encoded pointer data structure that encodes up to two bools in the last two bits of a pointer.
 
 ## Usage

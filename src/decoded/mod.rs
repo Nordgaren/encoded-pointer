@@ -42,7 +42,7 @@ pub struct DecodedPointer<T> {
 /// ```rust
 /// # use encoded_pointer::encoded::EncodedPointer;
 /// # use encoded_pointer::decoded::DecodedPointerMut;
-/// fn example(pointer: EncodedPointer) {
+/// fn example(pointer: &mut EncodedPointer) {
 ///     let DecodedPointerMut {
 ///         pointer: mut_buffer,
 ///         bool_one: something_i_care_about,
@@ -68,8 +68,8 @@ pub struct DecodedPointerMut<T> {
     pub bool_two: bool,
 }
 
-impl<T> From<EncodedPointer> for DecodedPointer<T> {
-    fn from(pointer: EncodedPointer) -> Self {
+impl<T> From<&EncodedPointer> for DecodedPointer<T> {
+    fn from(pointer: &EncodedPointer) -> Self {
         DecodedPointer {
             pointer: pointer.get_pointer(),
             bool_one: pointer.get_bool_one(),
@@ -78,10 +78,10 @@ impl<T> From<EncodedPointer> for DecodedPointer<T> {
     }
 }
 
-impl<T> From<EncodedPointer> for DecodedPointerMut<T> {
-    fn from(pointer: EncodedPointer) -> Self {
+impl<T> From<&mut EncodedPointer> for DecodedPointerMut<T> {
+    fn from(pointer: &mut EncodedPointer) -> Self {
         DecodedPointerMut {
-            pointer: pointer.get_mut_pointer(),
+            pointer: pointer.get_pointer_mut(),
             bool_one: pointer.get_bool_one(),
             bool_two: pointer.get_bool_two(),
         }

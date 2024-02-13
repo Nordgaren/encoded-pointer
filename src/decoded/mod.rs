@@ -47,7 +47,7 @@ pub struct DecodedPointer<T> {
 ///         pointer: mut_buffer,
 ///         bool_one: something_i_care_about,
 ///         bool_two: something_else_i_care_about,
-///     } = pointer.get_decoded_mut::<u8>();
+///     } = unsafe { pointer.get_decoded_mut::<u8>() };
 ///
 ///     if something_i_care_about {
 ///         // Do something
@@ -72,16 +72,6 @@ impl<T> From<&EncodedPointer> for DecodedPointer<T> {
     fn from(pointer: &EncodedPointer) -> Self {
         DecodedPointer {
             pointer: pointer.get_pointer(),
-            bool_one: pointer.get_bool_one(),
-            bool_two: pointer.get_bool_two(),
-        }
-    }
-}
-
-impl<T> From<&mut EncodedPointer> for DecodedPointerMut<T> {
-    fn from(pointer: &mut EncodedPointer) -> Self {
-        DecodedPointerMut {
-            pointer: pointer.get_pointer_mut(),
             bool_one: pointer.get_bool_one(),
             bool_two: pointer.get_bool_two(),
         }

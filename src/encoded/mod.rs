@@ -103,8 +103,12 @@ impl EncodedPointer {
         self.into()
     }
     /// Returns a DecodedPointerMut<T> with the specified mutable pointer type.
-    pub fn get_decoded_mut<T>(&mut self) -> DecodedPointerMut<T> {
-        self.into()
+    pub unsafe fn get_decoded_mut<T>(&mut self) -> DecodedPointerMut<T> {
+        DecodedPointerMut {
+            pointer: unsafe { self.get_pointer_mut() },
+            bool_one: self.get_bool_one(),
+            bool_two: self.get_bool_two(),
+        }
     }
     /// Returns the entire encoded pointer value, including the encoded bools.
     ///

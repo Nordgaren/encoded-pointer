@@ -10,7 +10,7 @@ Does not have any methods associated with it, and all fields are public.</p>
         pointer: mut_buffer,
         bool_one: something_i_care_about,
         bool_two: something_else_i_care_about,
-    } = <span class="kw">unsafe </span>{ pointer.get_decoded_mut::&lt;u8&gt;() };
+    } = <span class="kw">unsafe </span>{ pointer.decode_mut::&lt;u8&gt;() };
 
     <span class="kw">if </span>something_i_care_about {
         <span class="comment">// Do something

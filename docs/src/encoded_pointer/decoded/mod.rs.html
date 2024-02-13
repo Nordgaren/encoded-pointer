@@ -87,12 +87,12 @@
 /// ```rust
 /// # use encoded_pointer::encoded::EncodedPointer;
 /// # use encoded_pointer::decoded::DecodedPointer;
-/// fn example(pointer: EncodedPointer) {
+/// fn example(pointer: &amp;EncodedPointer) {
 ///     let DecodedPointer {
 ///         pointer: buffer,
 ///         bool_one: something_i_care_about,
 ///         bool_two: something_else_i_care_about,
-///     } = pointer.get_decoded::&lt;u8&gt;();
+///     } = pointer.decode::&lt;u8&gt;();
 ///
 ///     if something_i_care_about {
 ///         // Do something
@@ -126,7 +126,7 @@
 ///         pointer: mut_buffer,
 ///         bool_one: something_i_care_about,
 ///         bool_two: something_else_i_care_about,
-///     } = unsafe { pointer.get_decoded_mut::&lt;u8&gt;() };
+///     } = unsafe { pointer.decode_mut::&lt;u8&gt;() };
 ///
 ///     if something_i_care_about {
 ///         // Do something

@@ -5,12 +5,12 @@
 }</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>A helper type used to deconstruct an <code>EncodedPointer</code> to a <code>*mut T</code> and two encoded bools.
 Does not have any methods associated with it, and all fields are public.</p>
 <h2 id="example"><a href="#example">Example</a></h2>
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">fn </span>example(pointer: EncodedPointer) {
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">fn </span>example(pointer: <span class="kw-2">&amp;</span>EncodedPointer) {
     <span class="kw">let </span>DecodedPointer {
         pointer: buffer,
         bool_one: something_i_care_about,
         bool_two: something_else_i_care_about,
-    } = pointer.get_decoded::&lt;u8&gt;();
+    } = pointer.decode::&lt;u8&gt;();
 
     <span class="kw">if </span>something_i_care_about {
         <span class="comment">// Do something

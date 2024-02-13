@@ -8,12 +8,12 @@ use crate::encoded::EncodedPointer;
 /// ```rust
 /// # use encoded_pointer::encoded::EncodedPointer;
 /// # use encoded_pointer::decoded::DecodedPointer;
-/// fn example(pointer: EncodedPointer) {
+/// fn example(pointer: &EncodedPointer) {
 ///     let DecodedPointer {
 ///         pointer: buffer,
 ///         bool_one: something_i_care_about,
 ///         bool_two: something_else_i_care_about,
-///     } = pointer.get_decoded::<u8>();
+///     } = pointer.decode::<u8>();
 ///
 ///     if something_i_care_about {
 ///         // Do something
@@ -47,7 +47,7 @@ pub struct DecodedPointer<T> {
 ///         pointer: mut_buffer,
 ///         bool_one: something_i_care_about,
 ///         bool_two: something_else_i_care_about,
-///     } = unsafe { pointer.get_decoded_mut::<u8>() };
+///     } = unsafe { pointer.decode_mut::<u8>() };
 ///
 ///     if something_i_care_about {
 ///         // Do something

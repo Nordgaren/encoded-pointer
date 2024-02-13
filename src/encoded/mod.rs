@@ -47,7 +47,7 @@ use std::mem::size_of;
 ///         pointer: buffer,
 ///         bool_one: something_i_care_about,
 ///         bool_two: something_else_i_care_about,
-///     } = pointer.get_decoded::<u8>();
+///     } = pointer.decode::<u8>();
 ///
 ///     if something_i_care_about {
 ///         // Do something
@@ -99,11 +99,37 @@ impl EncodedPointer {
         EncodedPointer { value }
     }
     /// Returns a DecodedPointer<T> with the specified const pointer type.
-    pub fn get_decoded<T>(&self) -> DecodedPointer<T> {
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// # use encoded_pointer::encoded::EncodedPointer;
+    /// # use encoded_pointer::decoded::DecodedPointer;
+    /// # fn example(pointer: &EncodedPointer) {
+    ///     let DecodedPointer {
+    ///         pointer: buffer,
+    ///         bool_one: something_i_care_about,
+    ///         bool_two: something_else_i_care_about,
+    ///     } = pointer.decode::<u8>();
+    /// # }
+    pub fn decode<T>(&self) -> DecodedPointer<T> {
         self.into()
     }
     /// Returns a DecodedPointerMut<T> with the specified mutable pointer type.
-    pub unsafe fn get_decoded_mut<T>(&mut self) -> DecodedPointerMut<T> {
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// # use encoded_pointer::encoded::EncodedPointer;
+    /// # use encoded_pointer::decoded::DecodedPointerMut;
+    /// # fn example(pointer: &mut EncodedPointer) {
+    ///     let DecodedPointerMut {
+    ///         pointer: buffer,
+    ///         bool_one: something_i_care_about,
+    ///         bool_two: something_else_i_care_about,
+    ///     } = unsafe { pointer.decode_mut::<u8>() };
+    /// # }
+    pub unsafe fn decode_mut<T>(&mut self) -> DecodedPointerMut<T> {
         DecodedPointerMut {
             pointer: unsafe { self.get_pointer_mut() },
             bool_one: self.get_bool_one(),
@@ -204,6 +230,6 @@ fn bit_collision(pointer: usize) -> bool {
 
 impl Debug for EncodedPointer {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{:?} : 0x{:X}", self.get_decoded::<u8>(), self.value)
+        write!(f, "{:?} : 0x{:X}", self.decode::<u8>(), self.value)
     }
 }

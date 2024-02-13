@@ -107,6 +107,12 @@ impl EncodedPointer {
         self.into()
     }
     /// Returns the entire encoded pointer value, including the encoded bools.
+    ///
+    /// # Safety
+    ///
+    /// The caller can use this value to "clone" the `EncodedPointer`. This could lead to undefined behaviour.
+    /// Especially if the cloned `EncodedPointer` gets used as a mutable reference. Prefer to use a
+    /// reference or some type of `Rc<EncodedPointer>` to the EncodedPointer, instead of cloning it.
     #[inline(always)]
     pub unsafe fn get_value(&self) -> usize {
         self.value
@@ -122,8 +128,14 @@ impl EncodedPointer {
         self.get_address() as *const T
     }
     /// Returns a mutable pointer to the generic type, using the address portion of the encoded pointer.
+    ///
+    /// # Safety
+    ///
+    /// The caller must uphold Rusts mutability invariance, such that, they guarantee there is no other
+    /// mutable reference to this data,besides the `EncodedPointer`. Mutating data that has another mutable
+    /// reference could lead to undefined behaviour.
     #[inline(always)]
-    pub fn get_pointer_mut<T>(&self) -> *mut T {
+    pub unsafe fn get_pointer_mut<T>(&mut self) -> *mut T {
         self.get_address() as *mut T
     }
     /// Returns the bool encoded into the last bit of the pointer.
@@ -137,8 +149,13 @@ impl EncodedPointer {
         self.value & BOOL_TWO_MASK != 0
     }
     /// Sets the entire encoded pointer to the given value.
+    ///
+    /// # Safety
+    ///
+    /// This function does not check if there is bit collision. It is up to the user to pass in a valid value that either
+    /// contains none of the upper bits set, or the correct upper bits set that represent the correct values for the encoded pointer.
     #[inline(always)]
-    pub fn set_value(&mut self, value: usize) {
+    pub unsafe fn set_value(&mut self, value: usize) {
         self.value = value
     }
     /// Checks if the address has bit collision with the encoded bool portion of the encoded pointer. Sets the _address portion of the encoded
@@ -164,6 +181,8 @@ impl EncodedPointer {
         self.value &= !BOOL_TWO_MASK;
         self.value |= (b as usize) << BOOL_TWO_POSITION;
     }
+}
+impl EncodedPointer {
     /// Takes in a usize and two bools, and returns a usize with the two bools encoded into the last two bits of the usize.
     ///
     /// ### Does not do any checking for bit collision.

@@ -10,11 +10,14 @@ fn set_bools() {
 
     assert_eq!(0x100, pointer.get_address());
     assert_eq!(false, pointer.get_bool_one());
+    assert_eq!(false, pointer.get_bool_two());
 
     pointer.set_bool_one(true);
+    pointer.set_bool_two(true);
 
     assert_eq!(0x100, pointer.get_address());
     assert_eq!(true, pointer.get_bool_one());
+    assert_eq!(true, pointer.get_bool_two());
 }
 
 #[test]
@@ -24,27 +27,32 @@ fn set_address() {
 
     assert_eq!(0x100, pointer.get_address());
     assert_eq!(false, pointer.get_bool_one());
+    assert_eq!(false, pointer.get_bool_two());
 
+    pointer.set_bool_two(true);
     pointer.set_address(0x200);
 
     assert_eq!(0x200, pointer.get_address());
     assert_eq!(false, pointer.get_bool_one());
+    assert_eq!(true, pointer.get_bool_two());
 
     pointer.set_bool_one(true);
+    pointer.set_bool_two(false);
     pointer.set_address(0x300);
 
     assert_eq!(0x300, pointer.get_address());
     assert_eq!(true, pointer.get_bool_one());
+    assert_eq!(false, pointer.get_bool_two());
 }
 
 #[test]
 #[cfg(target_arch = "x86_64")]
 /// Test the debug output and make sure it's in the right format.
 fn test_debug() {
-    let pointer = EncodedPointer::new(0x100, true).unwrap();
+    let pointer = EncodedPointer::new(0x100, true, false).unwrap();
     assert_eq!(
         format!("{pointer:?}"),
-        "DecodedPointer { pointer: 0x100, bool_one: true } : 0x8000000000000100"
+        "DecodedPointer { pointer: 0x100, bool_one: true, bool_two: false } : 0x8000000000000100"
     );
 }
 #[test]

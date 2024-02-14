@@ -41,7 +41,7 @@ use encoded_pointer::decoded::DecodedPointer;
          pointer: buffer,
          bool_one: something_i_care_about,
          bool_two: something_else_i_care_about,
-     } = pointer.get_decoded::<u8>();
+     } = pointer.decode::<u8>();
      
      if something_i_care_about {
          // Do something

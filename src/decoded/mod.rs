@@ -31,6 +31,7 @@ use crate::encoded::EncodedPointer;
 pub struct DecodedPointer<T> {
     pub pointer: *const T,
     pub bool_one: bool,
+    #[cfg(feature = "double-encoded")]
     pub bool_two: bool,
 }
 
@@ -65,6 +66,7 @@ pub struct DecodedPointer<T> {
 pub struct DecodedPointerMut<T> {
     pub pointer: *mut T,
     pub bool_one: bool,
+    #[cfg(feature = "double-encoded")]
     pub bool_two: bool,
 }
 
@@ -73,6 +75,7 @@ impl<T> From<&EncodedPointer> for DecodedPointer<T> {
         DecodedPointer {
             pointer: pointer.get_pointer(),
             bool_one: pointer.get_bool_one(),
+            #[cfg(feature = "double-encoded")]
             bool_two: pointer.get_bool_two(),
         }
     }

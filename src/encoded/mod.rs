@@ -34,7 +34,7 @@ use std::mem::size_of;
 ///             .expect("Could not encode pointer");
 ///     let pointer = encoded.get_pointer();
 ///     let bool_one = check_some_value(pointer);
-///     encoded.set_bool_one(bool_one);///
+///     encoded.set_bool_one(bool_one);
 ///
 ///     let bool_two = check_some_other_value(pointer);
 ///     encoded.set_bool_two(bool_two);
@@ -67,6 +67,7 @@ pub struct EncodedPointer {
 // Assert that the EncodedPointer is the same size as a usize.
 const _: () = assert!(size_of::<EncodedPointer>() == size_of::<usize>());
 
+#[cfg(feature = "double-encoded")]
 impl EncodedPointer {
     /// Checks if there is bit collision in the provided pointer, and then returns an EncodedPointer with the given
     /// bool values encoded into the pointer. If there is bit collision, it returns Error with ErrorKind::InvalidInput.
@@ -86,6 +87,30 @@ impl EncodedPointer {
     pub fn from_address(address: usize) -> std::io::Result<Self> {
         Self::new(address, false, false)
     }
+}
+#[cfg(not(feature = "double-encoded"))]
+impl EncodedPointer {
+    /// Checks if there is bit collision in the provided pointer, and then returns an EncodedPointer with the given
+    /// bool values encoded into the pointer. If there is bit collision, it returns Error with ErrorKind::InvalidInput.
+    pub fn new(pointer: usize, bool_one: bool) -> std::io::Result<Self> {
+        if bit_collision(pointer) {
+            return Err(Error::new(
+                ErrorKind::InvalidInput,
+                "Pointer contains data in the two most significant bits, and can't be encoded.",
+            ));
+        }
+
+        let value = Self::encode(pointer, bool_one);
+        Ok(EncodedPointer { value })
+    }
+    /// Checks if there is bit collision in the provided pointer, and then returns an EncodedPointer with the encoded
+    /// bools set to false. If there is bit collision, it returns Error with ErrorKind::InvalidInput.
+    pub fn from_address(address: usize) -> std::io::Result<Self> {
+        Self::new(address, false)
+    }
+}
+
+impl EncodedPointer {
     /// Returns an encoded pointer with the provided value, without checking for bit collision. Assumes the given value
     /// is a valid EncodedPointer.
     ///
@@ -133,6 +158,7 @@ impl EncodedPointer {
         DecodedPointerMut {
             pointer: unsafe { self.get_pointer_mut() },
             bool_one: self.get_bool_one(),
+            #[cfg(feature = "double-encoded")]
             bool_two: self.get_bool_two(),
         }
     }
@@ -175,6 +201,7 @@ impl EncodedPointer {
     }
     /// Returns the bool encoded into the second to last bit of the pointer.
     #[inline(always)]
+    #[cfg(feature = "double-encoded")]
     pub fn get_bool_two(&self) -> bool {
         self.value & BOOL_TWO_MASK != 0
     }
@@ -207,11 +234,13 @@ impl EncodedPointer {
     }
     /// Sets the second to last bit of the encoded pointer to the provided value.
     #[inline(always)]
+    #[cfg(feature = "double-encoded")]
     pub fn set_bool_two(&mut self, b: bool) {
         self.value &= !BOOL_TWO_MASK;
         self.value |= (b as usize) << BOOL_TWO_POSITION;
     }
 }
+#[cfg(feature = "double-encoded")]
 impl EncodedPointer {
     /// Takes in a usize and two bools, and returns a usize with the two bools encoded into the last two bits of the usize.
     ///
@@ -221,6 +250,17 @@ impl EncodedPointer {
         pointer
             | ((bool_one as usize) << BOOL_ONE_POSITION)
             | ((bool_two as usize) << BOOL_TWO_POSITION)
+    }
+}
+#[cfg(not(feature = "double-encoded"))]
+impl EncodedPointer {
+    /// Takes in a usize and two bools, and returns a usize with the two bools encoded into the last two bits of the usize.
+    ///
+    /// ### Does not do any checking for bit collision.
+    #[inline(always)]
+    pub fn encode(pointer: usize, bool_one: bool) -> usize {
+        pointer
+            | ((bool_one as usize) << BOOL_ONE_POSITION)
     }
 }
 /// Returns true if any of the bits used for encoding are set.

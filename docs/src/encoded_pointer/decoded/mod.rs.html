@@ -77,6 +77,9 @@
 <a href="#77" id="77">77</a>
 <a href="#78" id="78">78</a>
 <a href="#79" id="79">79</a>
+<a href="#80" id="80">80</a>
+<a href="#81" id="81">81</a>
+<a href="#82" id="82">82</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::encoded::EncodedPointer;
 
 <span class="doccomment">/// A helper type used to deconstruct an `EncodedPointer` to a `*mut T` and two encoded bools.
@@ -110,7 +113,8 @@
 </span><span class="kw">pub struct </span>DecodedPointer&lt;T&gt; {
     <span class="kw">pub </span>pointer: <span class="kw-2">*const </span>T,
     <span class="kw">pub </span>bool_one: bool,
-    <span class="kw">pub </span>bool_two: bool,
+    <span class="attr">#[cfg(feature = <span class="string">&quot;double-encoded&quot;</span>)]
+    </span><span class="kw">pub </span>bool_two: bool,
 }
 
 <span class="doccomment">/// A type used to deconstruct an `EncodedPointer` to a `*mut T` and two encoded bools.
@@ -144,7 +148,8 @@
 </span><span class="kw">pub struct </span>DecodedPointerMut&lt;T&gt; {
     <span class="kw">pub </span>pointer: <span class="kw-2">*mut </span>T,
     <span class="kw">pub </span>bool_one: bool,
-    <span class="kw">pub </span>bool_two: bool,
+    <span class="attr">#[cfg(feature = <span class="string">&quot;double-encoded&quot;</span>)]
+    </span><span class="kw">pub </span>bool_two: bool,
 }
 
 <span class="kw">impl</span>&lt;T&gt; From&lt;<span class="kw-2">&amp;</span>EncodedPointer&gt; <span class="kw">for </span>DecodedPointer&lt;T&gt; {
@@ -152,7 +157,8 @@
         DecodedPointer {
             pointer: pointer.get_pointer(),
             bool_one: pointer.get_bool_one(),
-            bool_two: pointer.get_bool_two(),
+            <span class="attr">#[cfg(feature = <span class="string">&quot;double-encoded&quot;</span>)]
+            </span>bool_two: pointer.get_bool_two(),
         }
     }
 }

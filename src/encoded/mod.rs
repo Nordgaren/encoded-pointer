@@ -67,27 +67,6 @@ pub struct EncodedPointer {
 // Assert that the EncodedPointer is the same size as a usize.
 const _: () = assert!(size_of::<EncodedPointer>() == size_of::<usize>());
 
-#[cfg(feature = "double-encoded")]
-impl EncodedPointer {
-    /// Checks if there is bit collision in the provided pointer, and then returns an EncodedPointer with the given
-    /// bool values encoded into the pointer. If there is bit collision, it returns Error with ErrorKind::InvalidInput.
-    pub fn new(pointer: usize, bool_one: bool, bool_two: bool) -> std::io::Result<Self> {
-        if bit_collision(pointer) {
-            return Err(Error::new(
-                ErrorKind::InvalidInput,
-                "Pointer contains data in the two most significant bits, and can't be encoded.",
-            ));
-        }
-
-        let value = Self::encode(pointer, bool_one, bool_two);
-        Ok(EncodedPointer { value })
-    }
-    /// Checks if there is bit collision in the provided pointer, and then returns an EncodedPointer with the encoded
-    /// bools set to false. If there is bit collision, it returns Error with ErrorKind::InvalidInput.
-    pub fn from_address(address: usize) -> std::io::Result<Self> {
-        Self::new(address, false, false)
-    }
-}
 #[cfg(not(feature = "double-encoded"))]
 impl EncodedPointer {
     /// Checks if there is bit collision in the provided pointer, and then returns an EncodedPointer with the given
@@ -109,7 +88,27 @@ impl EncodedPointer {
         Self::new(address, false)
     }
 }
+#[cfg(feature = "double-encoded")]
+impl EncodedPointer {
+    /// Checks if there is bit collision in the provided pointer, and then returns an EncodedPointer with the given
+    /// bool values encoded into the pointer. If there is bit collision, it returns Error with ErrorKind::InvalidInput.
+    pub fn new(pointer: usize, bool_one: bool, bool_two: bool) -> std::io::Result<Self> {
+        if bit_collision(pointer) {
+            return Err(Error::new(
+                ErrorKind::InvalidInput,
+                "Pointer contains data in the two most significant bits, and can't be encoded.",
+            ));
+        }
 
+        let value = Self::encode(pointer, bool_one, bool_two);
+        Ok(EncodedPointer { value })
+    }
+    /// Checks if there is bit collision in the provided pointer, and then returns an EncodedPointer with the encoded
+    /// bools set to false. If there is bit collision, it returns Error with ErrorKind::InvalidInput.
+    pub fn from_address(address: usize) -> std::io::Result<Self> {
+        Self::new(address, false, false)
+    }
+}
 impl EncodedPointer {
     /// Returns an encoded pointer with the provided value, without checking for bit collision. Assumes the given value
     /// is a valid EncodedPointer.
@@ -240,6 +239,17 @@ impl EncodedPointer {
         self.value |= (b as usize) << BOOL_TWO_POSITION;
     }
 }
+#[cfg(not(feature = "double-encoded"))]
+impl EncodedPointer {
+    /// Takes in a usize and two bools, and returns a usize with the two bools encoded into the last two bits of the usize.
+    ///
+    /// ### Does not do any checking for bit collision.
+    #[inline(always)]
+    pub fn encode(pointer: usize, bool_one: bool) -> usize {
+        pointer
+            | ((bool_one as usize) << BOOL_ONE_POSITION)
+    }
+}
 #[cfg(feature = "double-encoded")]
 impl EncodedPointer {
     /// Takes in a usize and two bools, and returns a usize with the two bools encoded into the last two bits of the usize.
@@ -250,17 +260,6 @@ impl EncodedPointer {
         pointer
             | ((bool_one as usize) << BOOL_ONE_POSITION)
             | ((bool_two as usize) << BOOL_TWO_POSITION)
-    }
-}
-#[cfg(not(feature = "double-encoded"))]
-impl EncodedPointer {
-    /// Takes in a usize and two bools, and returns a usize with the two bools encoded into the last two bits of the usize.
-    ///
-    /// ### Does not do any checking for bit collision.
-    #[inline(always)]
-    pub fn encode(pointer: usize, bool_one: bool) -> usize {
-        pointer
-            | ((bool_one as usize) << BOOL_ONE_POSITION)
     }
 }
 /// Returns true if any of the bits used for encoding are set.

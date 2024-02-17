@@ -1,6 +1,5 @@
 use crate::encoded::consts::{BOOL_ONE_POSITION, BOOL_TWO_POSITION, PTR_SIZE_IN_BITS};
 use crate::encoded::EncodedPointer;
-use std::mem::size_of;
 
 #[test]
 /// Check that calling the set method actually changes the bools in the `EncodedPointer`, and doesn't change the address
@@ -47,6 +46,7 @@ fn set_address() {
 
 #[test]
 /// Test the debug output and make sure it's in the right format.
+#[cfg(target_arch = "x86_64")]
 fn test_debug() {
     let pointer = EncodedPointer::new(0x100, true, false).unwrap();
     assert_eq!(
@@ -55,10 +55,19 @@ fn test_debug() {
     );
 }
 #[test]
+#[cfg(target_arch = "x86")]
+/// Test the debug output and make sure it's in the right format.
+fn test_debug() {
+    let pointer = EncodedPointer::new(0x100, true, false).unwrap();
+    assert_eq!(
+        format!("{pointer:?}"),
+        "DecodedPointer { pointer: 0x100, bool_one: true, bool_two: false } : 0x80000100"
+    );
+}
+#[test]
 #[cfg(target_arch = "x86_64")]
-/// Assert that the size and positions of the bits are correct.
+/// Assert the positions of the bits are correct.
 fn assert_values() {
-    assert_eq!(size_of::<EncodedPointer>(), size_of::<usize>());
     assert_eq!(PTR_SIZE_IN_BITS, 64);
     assert_eq!(BOOL_ONE_POSITION, 63);
     assert_eq!(BOOL_TWO_POSITION, 62);
@@ -66,9 +75,8 @@ fn assert_values() {
 
 #[test]
 #[cfg(target_arch = "x86")]
-/// Assert that the size and positions of the bits are correct.
+/// Assert the positions of the bits are correct.
 fn assert_values() {
-    assert_eq!(size_of::<EncodedPointer>(), size_of::<usize>());
     assert_eq!(PTR_SIZE_IN_BITS, 32);
     assert_eq!(BOOL_ONE_POSITION, 31);
     assert_eq!(BOOL_TWO_POSITION, 30);

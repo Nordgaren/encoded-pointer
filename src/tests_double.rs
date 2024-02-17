@@ -46,7 +46,6 @@ fn set_address() {
 }
 
 #[test]
-#[cfg(target_arch = "x86_64")]
 /// Test the debug output and make sure it's in the right format.
 fn test_debug() {
     let pointer = EncodedPointer::new(0x100, true, false).unwrap();
